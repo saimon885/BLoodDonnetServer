@@ -26,12 +26,44 @@ app.get("/", (req, res) => {
 async function run() {
   try {
     await client.connect();
+    // Database
+    const db = client.db("BloodDonnet");
+    const userCollections = db.collection("users");
+    // users Related APi
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      user.role = "user";
+      user.createdAt = new Date();
+      const email = user.email;
+      const userExist = await userCollections.findOne({ email });
+      if (userExist) {
+        return res.send({ messege: "user already exist" });
+      }
+      const result = await userCollections.insertOne(user);
+      res.send(result);
+    });
+
+    app.get("/users", async (req, res) => {
+      const email = req.query.email;
+      const quiry = {};
+      if (email) {
+        quiry.email = email;
+      }
+      const result = await userCollections.find(quiry).toArray();
+      res.send(result);
+    });
+    
+    app.get("/users", async (req, res) => {
+      const result = await userCollections.find().toArray();
+      res.send(result);
+    });
+
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
