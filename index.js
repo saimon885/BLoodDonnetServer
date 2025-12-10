@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000;
 require("dotenv").config();
 
 const userRoutes = require("./routes/user.routes");
+const donnerRoutes = require("./routes/donner.routes");
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.egyr9n8.mongodb.net/?appName=Cluster0`;
 // middleWare
@@ -28,10 +29,11 @@ app.get("/", (req, res) => {
 async function run() {
   try {
     await client.connect();
-  
+
     const db = client.db("BloodDonnet");
-   
+
     app.use("/users", userRoutes);
+    app.use("/donners", donnerRoutes);
 
     await client.db("admin").command({ ping: 1 });
     console.log(
