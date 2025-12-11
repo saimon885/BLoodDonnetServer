@@ -23,6 +23,11 @@ const createDonner = async (req, res) => {
   const result = await donnerCollections.insertOne(Donnetion);
   res.send(result);
 };
+// allget Donor
+const AllDonor = async (req, res) => {
+  const result = await donnerCollections.find().toArray();
+  res.send(result);
+};
 
 // GET /donnetions
 const getDonner = async (req, res) => {
@@ -80,4 +85,5 @@ module.exports = {
   getSingleDonners,
   updateDonner,
   deleteDonner,
+  AllDonor,
 };

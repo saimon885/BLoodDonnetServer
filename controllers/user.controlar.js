@@ -45,6 +45,12 @@ const getUsers = async (req, res) => {
   res.send(result);
 };
 
+const getRoleUser = async (req, res) => {
+  const email = req.params.email;
+  const query = { email };
+  const user = await userCollections.findOne(query);
+  res.send({ role: user?.role || "user" });
+};
 // PATCH /users/:id
 
 const updateUser = async (req, res) => {
@@ -82,4 +88,5 @@ module.exports = {
   createUser,
   getUsers,
   updateUser,
+  getRoleUser,
 };
