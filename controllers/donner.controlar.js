@@ -19,6 +19,7 @@ const donnerCollections = client
 const createDonner = async (req, res) => {
   const Donnetion = req.body;
   Donnetion.status = "pending";
+  Donnetion.createdAt = new Date();
   const result = await donnerCollections.insertOne(Donnetion);
   res.send(result);
 };
@@ -30,7 +31,10 @@ const getDonner = async (req, res) => {
   if (requesterEmail) {
     quiry.requesterEmail = requesterEmail;
   }
-  const result = await donnerCollections.find(quiry).toArray();
+  const result = await donnerCollections
+    .find(quiry)
+    .sort({ createdAt: -1 })
+    .toArray();
   res.send(result);
 };
 // Get SingleDonners

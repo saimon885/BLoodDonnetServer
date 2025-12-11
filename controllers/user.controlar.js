@@ -15,11 +15,12 @@ const client = new MongoClient(uri, {
 });
 const userCollections = client.db("BloodDonnet").collection("users");
 
-
 // POST /users
 const createUser = async (req, res) => {
   const user = req.body;
-  user.role = "user";
+  user.role = "donor";
+  user.status = "active";
+  user.createAt = new Date();
   user.createdAt = new Date();
   const email = user.email;
   const userExist = await userCollections.findOne({ email });
@@ -37,25 +38,42 @@ const getUsers = async (req, res) => {
   if (email) {
     quiry.email = email;
   }
-  const result = await userCollections.find(quiry).toArray();
+  const result = await userCollections
+    .find(quiry)
+    .sort({ createAt: -1 })
+    .toArray();
   res.send(result);
 };
 
 // PATCH /users/:id
+
 const updateUser = async (req, res) => {
   const id = req.params.id;
-  const updateUser = req.body;
+  const updateData = req.body;
   const query = { _id: new ObjectId(id) };
+  const updateSet = {};
+  const allowedFields = [
+    "role",
+    "displayName",
+    "photoURL",
+    "email",
+    "bloodGroup",
+    "district",
+    "upazila",
+    "status",
+  ];
+  for (const key of allowedFields) {
+    if (updateData[key] !== undefined) {
+      updateSet[key] = updateData[key];
+    }
+  }
+  if (Object.keys(updateSet).length === 0) {
+    return res.status(400).send({ message: "No valid fields to update." });
+  }
   const updateDoc = {
-    $set: {
-      displayName: updateUser.displayName,
-      photoURL: updateUser.photoURL,
-      email: updateUser.email,
-      bloodGroup: updateUser.bloodGroup,
-      district: updateUser.district,
-      upazila: updateUser.upazila,
-    },
+    $set: updateSet,
   };
+
   const result = await userCollections.updateOne(query, updateDoc);
   res.send(result);
 };
