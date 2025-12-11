@@ -25,7 +25,10 @@ const createDonner = async (req, res) => {
 };
 // allget Donor
 const AllDonor = async (req, res) => {
-  const result = await donnerCollections.find().toArray();
+  const result = await donnerCollections
+    .find()
+    .sort({ createdAt: -1 })
+    .toArray();
   res.send(result);
 };
 
@@ -50,22 +53,56 @@ const getSingleDonners = async (req, res) => {
   res.send(result);
 };
 // update Donner
+// const updateDonner = async (req, res) => {
+//   const id = req.params.id;
+//   const updateUser = req.body;
+//   const query = { _id: new ObjectId(id) };
+//   const updateDoc = {
+//     $set: {
+//       Blood: updateUser.Blood,
+//       donetionDate: updateUser.donetionDate,
+//       donetionTime: updateUser.donetionTime,
+//       requestMessage: updateUser.requestMessage,
+//       recipentDistrict: updateUser.recipentDistrict,
+//       recipientUpazila: updateUser.recipientUpazila,
+//       hospitalName: updateUser.hospitalName,
+//       address: updateUser.address,
+//       recipientName: updateUser.recipientName,
+//     },
+//   };
+//   const result = await donnerCollections.updateOne(query, updateDoc);
+//   res.send(result);
+// };
 const updateDonner = async (req, res) => {
   const id = req.params.id;
-  const updateUser = req.body;
+  const updateData = req.body;
   const query = { _id: new ObjectId(id) };
+
+  const updateSet = {};
+  const allowedFields = [
+    "Blood",
+    "donetionDate",
+    "donetionTime",
+    "requestMessage",
+    "recipentDistrict",
+    "recipientUpazila",
+    "hospitalName",
+    "address",
+    "recipientName",
+    "status"
+  ];
+  for (const key of allowedFields) {
+    if (updateData[key] !== undefined) {
+      updateSet[key] = updateData[key];
+    }
+  }
+
+  if (Object.keys(updateSet).length === 0) {
+    return res.status(400).send({ message: "No valid fields to update." });
+  }
+
   const updateDoc = {
-    $set: {
-      Blood: updateUser.Blood,
-      donetionDate: updateUser.donetionDate,
-      donetionTime: updateUser.donetionTime,
-      requestMessage: updateUser.requestMessage,
-      recipentDistrict: updateUser.recipentDistrict,
-      recipientUpazila: updateUser.recipientUpazila,
-      hospitalName: updateUser.hospitalName,
-      address: updateUser.address,
-      recipientName: updateUser.recipientName,
-    },
+    $set: updateSet,
   };
   const result = await donnerCollections.updateOne(query, updateDoc);
   res.send(result);
