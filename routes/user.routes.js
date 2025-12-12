@@ -6,14 +6,14 @@ const {
   updateUser,
   getRoleUser,
 } = require("../controllers/user.controlar");
-
+const verifyToken = require("../MiddleWare/MiddleWare");
 // POST
 router.post("/", createUser);
 
 // GET
-router.get("/", getUsers);
+router.get("/", verifyToken, getUsers);
 // get
-router.get("/:email/role", getRoleUser);
+router.get("/:email/role", verifyToken, getRoleUser);
 
 // PATCH
 router.patch("/:id", updateUser);

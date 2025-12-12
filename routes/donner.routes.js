@@ -8,16 +8,16 @@ const {
   deleteDonner,
   AllDonor,
 } = require("../controllers/donner.controlar");
-
+const verifyToken = require("../MiddleWare/MiddleWare");
 // POST
 router.post("/", createDonner);
 
 // GET
 router.get("/", getDonner);
 
-router.get("/all", AllDonor);
+router.get("/all", verifyToken, AllDonor);
 // get single donners
-router.get("/:id", getSingleDonners);
+router.get("/:id", verifyToken, getSingleDonners);
 // update
 router.patch("/:id", updateDonner);
 // Delete

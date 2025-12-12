@@ -30,6 +30,7 @@ const AllDonor = async (req, res) => {
     .sort({ createdAt: -1 })
     .toArray();
   res.send(result);
+  
 };
 
 // GET /donnetions
@@ -52,7 +53,6 @@ const getSingleDonners = async (req, res) => {
   const result = await donnerCollections.findOne(query);
   res.send(result);
 };
-// update Donner
 // const updateDonner = async (req, res) => {
 //   const id = req.params.id;
 //   const updateUser = req.body;
@@ -89,7 +89,7 @@ const updateDonner = async (req, res) => {
     "hospitalName",
     "address",
     "recipientName",
-    "status"
+    "status",
   ];
   for (const key of allowedFields) {
     if (updateData[key] !== undefined) {
