@@ -46,6 +46,28 @@ const getUsers = async (req, res) => {
   res.send(result);
 };
 
+// allData user
+const alladminuser = async (req, res) => {
+  const result = await userCollections.find().sort({ createdAt: -1 }).toArray();
+  res.send(result);
+};
+
+const Alluser = async (req, res) => {
+  const { Blood, recipentDistrict, recipientUpazila } = req.query;
+  const query = {};
+  if (Blood) {
+    query.bloodGroup = Blood;
+  }
+  if (recipentDistrict) {
+    query.district = recipentDistrict;
+  }
+  if (recipientUpazila) {
+    query.upazila = recipientUpazila;
+  }
+  const result = await userCollections.find(query).toArray();
+  res.send(result);
+};
+
 const getRoleUser = async (req, res) => {
   const email = req.params.email;
   const query = { email };
@@ -87,6 +109,8 @@ const updateUser = async (req, res) => {
 
 module.exports = {
   createUser,
+  alladminuser,
+  Alluser,
   getUsers,
   updateUser,
   getRoleUser,

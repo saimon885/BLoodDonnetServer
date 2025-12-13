@@ -5,6 +5,8 @@ const {
   getUsers,
   updateUser,
   getRoleUser,
+  alladminuser,
+  Alluser,
 } = require("../controllers/user.controlar");
 const verifyToken = require("../MiddleWare/MiddleWare");
 // POST
@@ -13,6 +15,10 @@ router.post("/", createUser);
 // GET
 router.get("/", verifyToken, getUsers);
 // get
+router.get("/allusers", Alluser);
+router.get("/alladminusers", alladminuser);
+
+// email
 router.get("/:email/role", verifyToken, getRoleUser);
 
 // PATCH

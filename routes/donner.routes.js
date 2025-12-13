@@ -13,11 +13,11 @@ const verifyToken = require("../MiddleWare/MiddleWare");
 router.post("/", createDonner);
 
 // GET
-router.get("/", getDonner);
+router.get("/",  getDonner);
 
-router.get("/all", verifyToken, AllDonor);
+router.get("/all", AllDonor);
 // get single donners
-router.get("/:id", verifyToken, getSingleDonners);
+router.get("/:id", getSingleDonners);
 // update
 router.patch("/:id", updateDonner);
 // Delete
