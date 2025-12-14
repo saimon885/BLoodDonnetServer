@@ -122,12 +122,20 @@ const updatePayment = async (req, res) => {
   }
 };
 
-// get payment 
-const getPayment = async(req,res)=>{
-  
-}
+// get payment
+const getPayment = async (req, res) => {
+  const email = req.query.email;
+  const query = {};
+  if (email) {
+    query.customer_email = email;
+  }
+  const cursor = paymentCollections.find(query);
+  const result = await cursor.toArray();
+  res.send(result);
+};
 
 module.exports = {
   createCheckOut,
   updatePayment,
+  getPayment,
 };
