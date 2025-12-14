@@ -10,17 +10,17 @@ const {
 } = require("../controllers/donner.controlar");
 const verifyToken = require("../MiddleWare/MiddleWare");
 // POST
-router.post("/", createDonner);
+router.post("/", verifyToken, createDonner);
 
 // GET
-router.get("/",  getDonner);
+router.get("/", verifyToken, getDonner);
 
 router.get("/all", AllDonor);
 // get single donners
-router.get("/:id", getSingleDonners);
+router.get("/:id", verifyToken, getSingleDonners);
 // update
-router.patch("/:id", updateDonner);
+router.patch("/:id", verifyToken, updateDonner);
 // Delete
-router.delete("/:id", deleteDonner);
+router.delete("/:id", verifyToken, deleteDonner);
 
 module.exports = router;
