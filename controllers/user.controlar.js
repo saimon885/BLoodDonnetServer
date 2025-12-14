@@ -38,7 +38,7 @@ const getUsers = async (req, res) => {
   if (email) {
     quiry.email = email;
   }
-  console.log(req.headers);
+  // console.log(req.headers);
   const result = await userCollections
     .find(quiry)
     .sort({ createAt: -1 })

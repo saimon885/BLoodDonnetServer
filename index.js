@@ -7,6 +7,7 @@ require("dotenv").config();
 
 const userRoutes = require("./routes/user.routes");
 const donnerRoutes = require("./routes/donner.routes");
+const paymentRoutes = require("./routes/funding.routes");
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.egyr9n8.mongodb.net/?appName=Cluster0`;
 // middleWare
@@ -34,6 +35,7 @@ async function run() {
 
     app.use("/users", userRoutes);
     app.use("/donners", donnerRoutes);
+    app.use("/checkout-session", paymentRoutes);
 
     await client.db("admin").command({ ping: 1 });
     console.log(
