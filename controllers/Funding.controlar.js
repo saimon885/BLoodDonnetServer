@@ -129,8 +129,27 @@ const getPayment = async (req, res) => {
   if (email) {
     query.customer_email = email;
   }
-  const cursor = paymentCollections.find(query);
+  const cursor = paymentCollections.find(query).sort({ paidAt: -1 }).limit(10);
   const result = await cursor.toArray();
+  res.send(result);
+};
+const getAdmindashboardPayment = async (req, res) => {
+  const pipeline = [
+    {
+      $match: {
+        paymentStatus: "paid",
+      },
+    },
+    {
+      $group: {
+        _id: null,
+        totalFund: { $sum: "$amount" },
+      },
+    },
+  ];
+
+  const result = await paymentCollections.aggregate(pipeline).toArray();
+
   res.send(result);
 };
 
@@ -138,4 +157,5 @@ module.exports = {
   createCheckOut,
   updatePayment,
   getPayment,
+  getAdmindashboardPayment,
 };

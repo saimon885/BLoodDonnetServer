@@ -7,20 +7,22 @@ const {
   updateDonner,
   deleteDonner,
   AllDonor,
+  getAllDonationCount
 } = require("../controllers/donner.controlar");
 const verifyToken = require("../MiddleWare/MiddleWare");
 // POST
-router.post("/", verifyToken, createDonner);
+router.post("/", createDonner);
 
 // GET
-router.get("/", verifyToken, getDonner);
+router.get("/", getDonner);
 
 router.get("/all", AllDonor);
+router.get("/DonnetionCount", getAllDonationCount);
 // get single donners
-router.get("/:id", verifyToken, getSingleDonners);
+router.get("/:id",verifyToken, getSingleDonners);
 // update
-router.patch("/:id", verifyToken, updateDonner);
+router.patch("/:id", updateDonner);
 // Delete
-router.delete("/:id", verifyToken, deleteDonner);
+router.delete("/:id", deleteDonner);
 
 module.exports = router;

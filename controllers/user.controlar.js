@@ -68,6 +68,20 @@ const Alluser = async (req, res) => {
   res.send(result);
 };
 
+const getAllDonor = async (req, res) => {
+  const pipeline = [
+    {
+      $group: {
+        _id: "role",
+        count: { $sum: 1 },
+      },
+    },
+  ];
+
+  const result = await userCollections.aggregate(pipeline).toArray();
+  res.send(result);
+};
+
 const getRoleUser = async (req, res) => {
   const email = req.params.email;
   const query = { email };
@@ -112,6 +126,7 @@ module.exports = {
   alladminuser,
   Alluser,
   getUsers,
+  getAllDonor,
   updateUser,
   getRoleUser,
 };

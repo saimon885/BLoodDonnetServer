@@ -30,7 +30,6 @@ const AllDonor = async (req, res) => {
     .sort({ createdAt: -1 })
     .toArray();
   res.send(result);
-  
 };
 
 // GET /donnetions
@@ -51,6 +50,20 @@ const getSingleDonners = async (req, res) => {
   const id = req.params.id;
   const query = { _id: new ObjectId(id) };
   const result = await donnerCollections.findOne(query);
+  res.send(result);
+};
+
+const getAllDonationCount = async (req, res) => {
+  const pipeline = [
+    {
+      $group: {
+        _id: "status",
+        count: { $sum: 1 },
+      },
+    },
+  ];
+
+  const result = await donnerCollections.aggregate(pipeline).toArray();
   res.send(result);
 };
 // const updateDonner = async (req, res) => {
@@ -122,5 +135,6 @@ module.exports = {
   getSingleDonners,
   updateDonner,
   deleteDonner,
+  getAllDonationCount,
   AllDonor,
 };
