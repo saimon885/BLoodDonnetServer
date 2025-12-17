@@ -17,6 +17,7 @@ router.post("/", createUser);
 router.get("/", verifyToken, getUsers);
 // get
 router.get("/allusers", Alluser);
+// getUsrs Role
 router.get("/allusers/Role", getAllDonor);
 router.get("/alladminusers", verifyToken, alladminuser);
 
