@@ -66,6 +66,54 @@ const getAllDonationCount = async (req, res) => {
   const result = await donnerCollections.aggregate(pipeline).toArray();
   res.send(result);
 };
+const getAllPendingCount = async (req, res) => {
+  const pipeline = [
+    {
+      $match: { status: "pending" },
+    },
+    {
+      $group: {
+        _id: "status",
+        count: { $sum: 1 },
+      },
+    },
+  ];
+
+  const result = await donnerCollections.aggregate(pipeline).toArray();
+  res.send(result);
+};
+const getAllInprogressCount = async (req, res) => {
+  const pipeline = [
+    {
+      $match: { status: "in-progress" },
+    },
+    {
+      $group: {
+        _id: "status",
+        count: { $sum: 1 },
+      },
+    },
+  ];
+
+  const result = await donnerCollections.aggregate(pipeline).toArray();
+  res.send(result);
+};
+const getAllCompletedCount = async (req, res) => {
+  const pipeline = [
+    {
+      $match: { status: "completed" },
+    },
+    {
+      $group: {
+        _id: "status",
+        count: { $sum: 1 },
+      },
+    },
+  ];
+
+  const result = await donnerCollections.aggregate(pipeline).toArray();
+  res.send(result);
+};
 // const updateDonner = async (req, res) => {
 //   const id = req.params.id;
 //   const updateUser = req.body;
@@ -136,5 +184,8 @@ module.exports = {
   updateDonner,
   deleteDonner,
   getAllDonationCount,
+  getAllPendingCount,
+  getAllInprogressCount,
+  getAllCompletedCount,
   AllDonor,
 };

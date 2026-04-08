@@ -70,10 +70,59 @@ const Alluser = async (req, res) => {
 
 const getAllDonor = async (req, res) => {
   const pipeline = [
+    { $match: { role: "donor" } },
     {
       $group: {
-        _id: "role",
+        _id: null,
         count: { $sum: 1 },
+      },
+    },
+  ];
+
+  const result = await userCollections.aggregate(pipeline).toArray();
+  res.send(result);
+};
+const getAllVolunteer = async (req, res) => {
+  const pipeline = [
+    { $match: { role: "volunteer" } },
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+      },
+    },
+  ];
+
+  const result = await userCollections.aggregate(pipeline).toArray();
+  res.send(result);
+};
+const getAllAdmin = async (req, res) => {
+  const pipeline = [
+    { $match: { role: "admin" } },
+    {
+      $group: {
+        _id: null,
+        count: { $sum: 1 },
+      },
+    },
+  ];
+
+  const result = await userCollections.aggregate(pipeline).toArray();
+  res.send(result);
+};
+const getBloodGroup = async (req, res) => {
+  const pipeline = [
+    {
+      $group: {
+        _id: "$bloodGroup", 
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        bloodGroup: "$_id",
+        count: 1,
       },
     },
   ];
@@ -129,4 +178,7 @@ module.exports = {
   getAllDonor,
   updateUser,
   getRoleUser,
+  getAllAdmin,
+  getAllVolunteer,
+  getBloodGroup
 };

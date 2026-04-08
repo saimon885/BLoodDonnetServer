@@ -7,7 +7,10 @@ const {
   updateDonner,
   deleteDonner,
   AllDonor,
-  getAllDonationCount
+  getAllDonationCount,
+  getAllPendingCount,
+  getAllInprogressCount,
+  getAllCompletedCount
 } = require("../controllers/donner.controlar");
 const verifyToken = require("../MiddleWare/MiddleWare");
 // POST
@@ -18,6 +21,9 @@ router.get("/", getDonner);
 
 router.get("/all", AllDonor);
 router.get("/DonnetionCount", getAllDonationCount);
+router.get("/PendingDonnetionCount", getAllPendingCount);
+router.get("/InprogressDonnetionCount", getAllInprogressCount);
+router.get("/CompletedDonnetionCount", getAllCompletedCount);
 // get single donners
 router.get("/:id",verifyToken, getSingleDonners);
 // update
